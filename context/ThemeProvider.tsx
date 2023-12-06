@@ -3,21 +3,25 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 
 interface ThemeContextProps {
   mode: string;
-  setmode: (mode: string) => void;
+  setMode: (mode: string) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setmode] = useState("");
+  const [mode, setMode] = useState("");
 
   const handleThemeChange = () => {
-    if (mode === "dark") {
-      setmode("light");
-      document.documentElement.classList.add("light");
-    } else {
-      setmode("dark");
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      setMode("dark");
       document.documentElement.classList.add("dark");
+    } else {
+      setMode("light");
+      document.documentElement.classList.remove("dark");
     }
   };
 
@@ -26,7 +30,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [mode]);
 
   return (
-    <ThemeContext.Provider value={{ mode, setmode }}>
+    <ThemeContext.Provider value={{ mode, setMode }}>
       {children}
     </ThemeContext.Provider>
   );

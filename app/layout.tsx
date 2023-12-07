@@ -8,13 +8,13 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
-  weights: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--front-inter",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter",
 });
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weights: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--front-spaceGrotesk",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-spaceGrotesk",
 });
 
 export const metadata: Metadata = {

@@ -48,7 +48,6 @@ const UserSchema = new Schema<IUser>({
   reputation: {
     type: Number,
     default: 0,
-    y,
   },
   saved: {
     type: [Schema.Types.ObjectId],

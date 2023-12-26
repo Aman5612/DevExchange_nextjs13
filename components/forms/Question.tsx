@@ -22,6 +22,7 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const Question = () => {
   const form = useForm<z.infer<typeof Questions>>({
@@ -33,9 +34,10 @@ const Question = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof Questions>) {
+  async function onSubmit(values: z.infer<typeof Questions>) {
     setIsSubmitting(true);
     try {
+      await createQuestion({});
     } catch (error) {
     } finally {
       setIsSubmitting(false);
@@ -123,6 +125,10 @@ const Question = () => {
                   onInit={(evt, editor) => {
                     // @ts-ignore
                     editorRef.current = editor;
+                  }}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => {
+                    field.onChange(content);
                   }}
                   initialValue=""
                   init={{

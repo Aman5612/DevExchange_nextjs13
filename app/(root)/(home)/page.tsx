@@ -4,10 +4,8 @@ import LocalSearchBar from "@/components/LocalSearchBar";
 import NoResult from "@/components/NoResult";
 import QuestionCard from "@/components/shared/QuestionCard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { HomePageFilters } from "@/constants/HomeFilters";
 import Questions from "@/constants/Questions";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -37,7 +35,7 @@ export default function Home() {
       </div>
       <div className=" flex w-full flex-col gap-[20px]">
         {Questions.length > 0 ? (
-          Questions.map((question: Questions) => {
+          Questions.map((question) => {
             return (
               <QuestionCard
                 _id={question._id}

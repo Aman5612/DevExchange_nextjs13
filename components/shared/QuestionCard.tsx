@@ -17,8 +17,8 @@ interface Props {
   };
   upVotes: number;
   views: number;
-  answers: Array<object>;
-  createdAt: Date;
+  answers: number;
+  createdAt: string;
 }
 
 const QuestionCard = ({
@@ -27,7 +27,7 @@ const QuestionCard = ({
   tags,
   key,
   author,
-  upvotes,
+  upVotes,
   views,
   answers,
   createdAt,

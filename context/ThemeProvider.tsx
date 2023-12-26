@@ -2,14 +2,14 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 interface ThemeContextProps {
-  mode: string;
-  setMode: (mode: string) => void;
+  theme: string;
+  setTheme: (mode: string) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState("");
+  const [theme, setTheme] = useState("");
 
   const handleThemeChange = () => {
     if (
@@ -17,20 +17,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       (!("theme" in localStorage) &&
         window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
-      setMode("dark");
+      setTheme("dark");
       document.documentElement.classList.add("dark");
     } else {
-      setMode("light");
+      setTheme("light");
       document.documentElement.classList.remove("dark");
     }
   };
 
   useEffect(() => {
     handleThemeChange();
-  }, [mode]);
+  }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ mode, setMode }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

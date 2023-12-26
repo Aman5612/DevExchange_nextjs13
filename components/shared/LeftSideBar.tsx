@@ -10,8 +10,8 @@ import { usePathname } from "next/navigation";
 const LeftSideBar = () => {
   const pathName = usePathname();
   return (
-    <section className="light-border background-light900_dark200 custom-scrollbar sticky flex h-screen flex-col overflow-y-auto border-r-[1px] p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
-      <div className="flex flex-1 flex-col gap-6">
+    <section className="light-border background-light900_dark200 custom-scrollbar sticky left-0 top-0 flex h-screen flex-col overflow-y-auto border-r-[1px] p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
+      <div className="flex flex-1 flex-col gap-6 ">
         {sidebarLinks.map((item) => {
           const isActive =
             (pathName.includes(item.route) && item.route.length > 1) ||

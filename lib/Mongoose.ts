@@ -13,7 +13,7 @@ export const ConnectDataBase = async () => {
   }
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
-      dbName: "DevExchange",
+      dbName: "Devexchange",
     });
 
     isConnected = true;

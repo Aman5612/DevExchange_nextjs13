@@ -24,11 +24,15 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
 
-const Question = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
   const form = useForm<z.infer<typeof Questions>>({
     resolver: zodResolver(Questions),
     defaultValues: {
-      title: "",
+      title: " ",
       explanation: "",
       tags: [],
     },
@@ -37,7 +41,12 @@ const Question = () => {
   async function onSubmit(values: z.infer<typeof Questions>) {
     setIsSubmitting(true);
     try {
-      await createQuestion({});
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tag: values.tags,
+        author: JSON.parse(mongoUserId),
+      });
     } catch (error) {
     } finally {
       setIsSubmitting(false);

@@ -32,6 +32,7 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: Props) => {
+  const authorName = author.name;
   return (
     <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[45px] py-[36px] shadow">
       <h3 className="h3-semibold base-semibold text-dark200_light900 line-clamp-[1] text-[20px]">
@@ -60,7 +61,7 @@ const QuestionCard = ({
               width={20}
               alt="user"
             />
-            <p>Aman Tiwari</p>
+            <p>{authorName}</p>
           </div>
 
           <p>text</p>

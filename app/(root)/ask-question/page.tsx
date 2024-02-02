@@ -1,13 +1,20 @@
 import Question from "@/components/forms/Question";
-// import { Input } from "@/components/ui/input";
+import { redirect } from "next/navigation";
+// import { auth } from "@clerk/nextjs";
 import React from "react";
+import { getUserById } from "@/lib/actions/user.action";
 
-const AskQuestions = () => {
+const AskQuestions = async () => {
+  // const { userId } = auth();
+  const userId = "12345";
+  if (!userId) redirect("/sign-in");
+  const mongoUser = await getUserById({ userId });
+
   return (
-    <div className="">
-      <h1 className="h1-bold text-dark100_light900 ">Ask a public quesiton</h1>
+    <div>
+      <h1 className="h1-bold text-dark100_light900 ">Ask a public question</h1>
       <div className="mt-9">
-        <Question />
+        <Question mongoUserId={JSON.stringify(mongoUser._id)} />
       </div>
     </div>
   );

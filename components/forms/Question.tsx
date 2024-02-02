@@ -23,12 +23,19 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
 
-const Question = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const form = useForm<z.infer<typeof Questions>>({
     resolver: zodResolver(Questions),
     defaultValues: {
-      title: "",
+      title: " ",
       explanation: "",
       tags: [],
     },
@@ -37,8 +44,17 @@ const Question = () => {
   async function onSubmit(values: z.infer<typeof Questions>) {
     setIsSubmitting(true);
     try {
-      await createQuestion({});
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+      router.push("/");
     } catch (error) {
+      console.log(error);
+      throw error;
     } finally {
       setIsSubmitting(false);
     }

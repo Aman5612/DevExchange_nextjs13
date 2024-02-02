@@ -5,18 +5,20 @@ import { revalidatePath } from "next/cache";
 import { ConnectDataBase } from "../Mongoose";
 import Tag from "@/Database/tag.model";
 import { CreateQuestionParams, GetQuestionsParams } from "./shared.type";
+import User from "@/Database/user.model";
 
 export async function getQuestion(params: GetQuestionsParams) {
   try {
-    await ConnectDataBase();
-    const Questions = await Question.find()
-      .populate("author")
-      .populate("tags")
+    ConnectDataBase();
+
+    const questions = await Question.find({})
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
       .sort({ createdAt: -1 });
-    // console.log(Questions);
-    return Questions;
+
+    return questions;
   } catch (error) {
-    console.log("Questions fetch nhi ho rahein hain bhai", error);
+    console.log(error);
     throw error;
   }
 }

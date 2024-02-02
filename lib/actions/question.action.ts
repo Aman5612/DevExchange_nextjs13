@@ -10,8 +10,8 @@ export async function getQuestion(params: GetQuestionsParams) {
   try {
     await ConnectDataBase();
     const Questions = await Question.find()
-      .populate({ path: "author", model: "User" })
-      .populate({ path: "tags", model: "Tag" })
+      .populate("author")
+      .populate("tags")
       .sort({ createdAt: -1 });
     // console.log(Questions);
     return Questions;

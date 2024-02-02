@@ -5,8 +5,7 @@ let isConnected: boolean = false;
 export const ConnectDataBase = async () => {
   mongoose.set("strict", true);
 
-  const URL =
-    "mongodb+srv://aman5612:hUw42fXicveWNNc6@cluster0.cqhprto.mongodb.net/?retryWrites=true&w=majority";
+  const URL = process.env.MONGODB_URL;
   if (!URL) {
     return console.log("MONGODB_URL is missing");
   }

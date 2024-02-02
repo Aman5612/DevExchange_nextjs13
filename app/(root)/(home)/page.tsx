@@ -10,7 +10,7 @@ import { getQuestion } from "@/lib/actions/question.action";
 import Link from "next/link";
 
 export default async function Home() {
-  const mongoQuestions = await getQuestion();
+  const mongoQuestions = await getQuestion({});
 
   return (
     <div className="  sticky mx-auto flex w-full flex-col gap-[40px]">

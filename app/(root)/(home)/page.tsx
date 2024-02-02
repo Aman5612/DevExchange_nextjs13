@@ -5,10 +5,13 @@ import NoResult from "@/components/NoResult";
 import QuestionCard from "@/components/shared/QuestionCard";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/HomeFilters";
-import Questions from "@/constants/Questions";
+// import Questions from "@/constants/Questions";
+import { getQuestion } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const mongoQuestions = await getQuestion();
+
   return (
     <div className="  sticky mx-auto flex w-full flex-col gap-[40px]">
       <div className="flex flex-col gap-[30px] ">
@@ -34,8 +37,8 @@ export default function Home() {
         <HomeFilter />
       </div>
       <div className=" flex w-full flex-col gap-[20px]">
-        {Questions.length > 0 ? (
-          Questions.map((question) => {
+        {mongoQuestions.length > 0 ? (
+          mongoQuestions.map((question) => {
             return (
               <QuestionCard
                 _id={question._id}

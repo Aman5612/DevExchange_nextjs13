@@ -1,34 +1,57 @@
 "use server";
 
 import Question from "@/Database/question.model";
+import { revalidatePath } from "next/cache";
 import { ConnectDataBase } from "../Mongoose";
 import Tag from "@/Database/tag.model";
+import { CreateQuestionParams, GetQuestionsParams } from "./shared.type";
 
-export async function createQuestion(params: any) {
+export async function getQuestion(params: GetQuestionsParams) {
   try {
     await ConnectDataBase();
-    const { title, content, tags, author } = params;
+    const Questions = await Question.find()
+      .populate({ path: "author", model: "User" })
+      .sort({ createdAt: -1 });
+    // console.log(Questions);
+    return Questions;
+  } catch (error) {
+    console.log("Questions fetch nhi ho rahein hain bhai", error);
+    throw error;
+  }
+}
+
+export async function createQuestion(params: CreateQuestionParams) {
+  try {
+    await ConnectDataBase();
+
+    const { title, content, tags, author, path } = params;
+
     const question = await Question.create({
       title,
       content,
       author,
+      path,
     });
 
-    const tagDocument = [];
-
+    const tagDocuments = [];
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
-        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
+        {
+          name: { $regex: new RegExp(`^${tag}$`, "i") },
+        },
         { $setOnInsert: { name: tag }, $push: { question: question._id } },
-        { upsetrue: true, new: true }
+        { upsert: true, new: true }
       );
-      tagDocument.push(existingTag._id);
+
+      tagDocuments.push(existingTag);
     }
 
     await Question.findByIdAndUpdate(question._id, {
-      $push: { tags: { $each: tagDocument } },
+      $push: { tags: { $each: tagDocuments } },
     });
+
+    revalidatePath(path);
   } catch (error) {
-    console.log("error", error);
+    console.log(error);
   }
 }

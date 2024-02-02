@@ -6,8 +6,9 @@ export const getUserById = async (params: any) => {
     await ConnectDataBase();
     const { userId } = params;
     const user = await User.findOne({ clerkId: userId });
-    return user;
+    return user || null;
   } catch (error) {
     console.log("error", error);
+    throw error;
   }
 };

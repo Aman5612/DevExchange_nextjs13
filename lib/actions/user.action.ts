@@ -11,7 +11,7 @@ import Question from "@/Database/question.model";
 
 export async function deleteUser(params: DeleteUserParams) {
   try {
-    ConnectDataBase();
+    await ConnectDataBase();
 
     const { clerkId } = params;
 

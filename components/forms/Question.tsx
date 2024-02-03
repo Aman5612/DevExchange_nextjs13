@@ -137,7 +137,7 @@ const Question = ({ mongoUserId }: Props) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Editor
-                  apiKey="0bk60i5c9l7s5zx1sfldn8mvdxsvjbey02pvovrd2zhmiseh"
+                  apiKey="eto7c3hbsihps9q4k9awbl12u62e6u9xtv3tbmhgzbh0keg7"
                   onInit={(evt, editor) => {
                     // @ts-ignore
                     editorRef.current = editor;

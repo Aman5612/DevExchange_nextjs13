@@ -9,7 +9,6 @@ import {
 } from "./shared.type";
 import { revalidatePath } from "next/cache";
 import Question from "@/Database/question.model";
-import { create } from "domain";
 
 export async function deleteUser(params: DeleteUserParams) {
   try {

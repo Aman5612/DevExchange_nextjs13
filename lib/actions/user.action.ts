@@ -3,11 +3,13 @@ import { ConnectDataBase } from "../Mongoose";
 import {
   CreateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
   GetUserByIdParams,
   UpdateUserParams,
 } from "./shared.type";
 import { revalidatePath } from "next/cache";
 import Question from "@/Database/question.model";
+import { create } from "domain";
 
 export async function deleteUser(params: DeleteUserParams) {
   try {
@@ -67,6 +69,18 @@ export const getUserById = async (params: GetUserByIdParams) => {
     await ConnectDataBase();
     const { userId } = params;
     const user = await User.findOne({ clerkId: userId });
+    return user || null;
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+};
+export const getAllUsers = async (params: GetAllUsersParams) => {
+  try {
+    await ConnectDataBase();
+
+    const user = await User.find().sort({ createdAt: -1 });
+
     return user || null;
   } catch (error) {
     console.log("error", error);

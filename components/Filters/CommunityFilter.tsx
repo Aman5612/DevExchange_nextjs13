@@ -19,10 +19,10 @@ interface props {
 
 const Filter = ({ filters }: props) => {
   return (
-    <div className=" background-light800_dark300 w-full rounded-xl md:hidden">
+    <div className=" background-light800_dark300 w-[207px] rounded-xl ">
       <Select>
         <SelectTrigger className="background-light800_dark300 body-regular light-border text-dark500_light700 min-h-[56px] w-full  border px-5 py-2.5">
-          <SelectValue placeholder="Select a Filter" />
+          <SelectValue placeholder="Select User" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

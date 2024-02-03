@@ -15,7 +15,7 @@ interface Props {
   author: {
     _id: number;
     name: string;
-    avatar: string;
+    picture: string;
   };
   upVotes: number;
   views: number;
@@ -60,8 +60,14 @@ const QuestionCard = ({
 
       <div className="flex justify-between">
         <div className="flex gap-[5px]">
-          <div className="flex gap-[4px]">
-            <Image src={author.avatar} height={20} width={20} alt="user" />
+          <div className="flex gap-[4px] ">
+            <Image
+              className="rounded-full"
+              src={author.picture}
+              height={20}
+              width={20}
+              alt="user"
+            />
             <p className="flex items-center font-inter text-[14px] font-medium">
               {authorName}
             </p>

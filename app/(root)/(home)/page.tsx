@@ -6,9 +6,9 @@ import QuestionCard from "@/components/shared/QuestionCard";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/HomeFilters";
 import { getQuestion } from "@/lib/actions/question.action";
+import Link from "next/link";
 // import { userStatus } from "@/lib/actions/status.action";
 // import { auth } from "@clerk/nextjs";
-import Link from "next/link";
 // import { useEffect, useState } from "react";
 
 export default async function Home() {

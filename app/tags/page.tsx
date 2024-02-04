@@ -1,18 +1,19 @@
 "Use client";
 import CommunityFilter from "@/components/Filters/CommunityFilter";
 import LocalSearchBar from "@/components/LocalSearchBar";
-import UserCard from "@/components/shared/cards/UserCard";
+import TagCard from "@/components/shared/cards/TagCard";
 import { UserFilters } from "@/constants/HomeFilters";
-import { getAllUsers } from "@/lib/actions/user.action";
+import { getAllTags } from "@/lib/actions/tag.action";
 import Link from "next/link";
 import React from "react";
 
 const page = async () => {
-  const users = await getAllUsers({});
+  const result = await getAllTags({});
+
   return (
     <section>
       <div className="flex flex-col gap-6">
-        <h1 className="h1-bold text-dark100_light900">All Users</h1>
+        <h1 className="h1-bold text-dark100_light900">Tags</h1>
         <div className="flex min-h-[56px] w-full grow justify-between gap-4 rounded-xl max-sm:flex-col max-sm:items-center">
           <LocalSearchBar
             iconPosition="left"
@@ -25,9 +26,9 @@ const page = async () => {
         </div>
       </div>
       <div className="mt-12 flex flex-wrap gap-4">
-        {users.length > 0 ? (
-          users.map((user) => {
-            return <UserCard key={user._id} userDetails={user} />;
+        {result.tags.length > 0 ? (
+          result.tags.map((tag) => {
+            return <TagCard key={tag._id} Tags={tag} />;
           })
         ) : (
           <div className="mx-auto mt-12 flex flex-col items-center">

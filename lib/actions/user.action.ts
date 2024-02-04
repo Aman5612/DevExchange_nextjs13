@@ -3,6 +3,7 @@ import { ConnectDataBase } from "../Mongoose";
 import {
   CreateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
   GetUserByIdParams,
   UpdateUserParams,
 } from "./shared.type";
@@ -67,6 +68,18 @@ export const getUserById = async (params: GetUserByIdParams) => {
     await ConnectDataBase();
     const { userId } = params;
     const user = await User.findOne({ clerkId: userId });
+    return user || null;
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+};
+export const getAllUsers = async (params: GetAllUsersParams) => {
+  try {
+    await ConnectDataBase();
+
+    const user = await User.find().sort({ createdAt: -1 });
+
     return user || null;
   } catch (error) {
     console.log("error", error);

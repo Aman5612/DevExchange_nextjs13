@@ -11,7 +11,7 @@ interface Props {
 const RenderTags = ({ _id, name, totalQuestions, showCount }: Props) => {
   return (
     <Link href="/" className=" flex justify-between ">
-      <div className="body-medium text-light400_light500 background-light800_dark300 flex items-center justify-center rounded-[6px] px-[16px] py-[8px] shadow ">
+      <div className="body-medium text-light400_light500 background-light800_dark300 flex items-center justify-center rounded-[6px] px-[15px] py-[4px] shadow  ">
         <p className="text-[10px]">{name}</p>
       </div>
       {showCount && (

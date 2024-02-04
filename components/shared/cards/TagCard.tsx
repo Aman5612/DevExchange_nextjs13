@@ -18,7 +18,7 @@ const TagCard = ({ Tags }: Props) => {
         <div className="shadow-light100_dark100 light-border-2  flex w-[260px] flex-col gap-[20px] rounded-[10px]    border-gray-300 p-[30px]">
           <div className="flex flex-col items-center gap-[20px] ">
             <div className="flex flex-col items-center gap-2">
-              <div className="background-light800_dark400 w-fit rounded-sm px-5 py-1.5">
+              <div className="background-light800_dark400 w-fit rounded px-5 py-1.5">
                 <p className="paragraph-semibold text-dark300_light900 ">
                   {name}
                 </p>

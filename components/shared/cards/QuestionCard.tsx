@@ -1,8 +1,8 @@
 import React from "react";
-import RenderTags from "./RenderTags";
 import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
+import RenderTags from "../RenderTags";
 
 interface Props {
   _id: number;
@@ -38,7 +38,7 @@ const QuestionCard = ({
   return (
     <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[45px] py-[36px] shadow">
       <div>
-        <Link href={"/"}>
+        <Link href={`/question/${_id}`}>
           {" "}
           <h3 className="h3-semibold base-semibold text-dark200_light900 line-clamp-[1] text-[20px]">
             {title}

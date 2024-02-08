@@ -1,9 +1,14 @@
+import { getQuestionById } from "@/lib/actions/question.action";
 import React from "react";
 
-const page = ({ params }) => {
+const page = async ({ params }) => {
   console.log(params);
-  return <div>{params._id}</div>;
+  const question = await getQuestionById({ questionId: params._id });
+  return (
+    <div>
+      <h1 className="h1-bold">{question.title}</h1>
+    </div>
+  );
 };
 
 export default page;
-

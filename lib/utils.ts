@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import moment from "moment";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,4 +16,9 @@ export const formatAndDivideNumber = (num: number): string => {
   } else {
     return num.toString();
   }
+};
+
+export const getTimestamp = (createdAt: Date) => {
+  const timestamp = moment(createdAt).fromNow();
+  return timestamp;
 };

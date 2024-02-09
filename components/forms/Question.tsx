@@ -24,12 +24,14 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface Props {
   mongoUserId: string;
 }
 
 const Question = ({ mongoUserId }: Props) => {
+  const { theme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const form = useForm<z.infer<typeof Questions>>({
@@ -173,6 +175,8 @@ const Question = ({ mongoUserId }: Props) => {
                       "alignright alignjustify | bullist numlist | ",
                     content_style:
                       "body { font-family:Inter,sans-serif; font-size:16px,bacground-color: #858EAD; }",
+                    skin: theme === "dark" ? "oxide-dark" : "oxide",
+                    content_css: theme === "dark" ? "dark" : "light",
                   }}
                 />
               </FormControl>

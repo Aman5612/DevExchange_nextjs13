@@ -1,3 +1,4 @@
+import Answer from "@/components/forms/Answer";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTags from "@/components/shared/RenderTags";
@@ -8,7 +9,7 @@ import Link from "next/link";
 import React from "react";
 
 const page = async ({ params }) => {
-  console.log(params);
+  const mongoUserId = 
   const question = await getQuestionById({ questionId: params._id });
   return (
     <>
@@ -69,6 +70,7 @@ const page = async ({ params }) => {
           />
         ))}
       </div>
+      <Answer/>
     </>
   );
 };

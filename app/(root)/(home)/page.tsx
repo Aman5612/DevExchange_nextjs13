@@ -2,7 +2,7 @@ import Filter from "@/components/Filter";
 import HomeFilter from "@/components/Home/HomeFilter";
 import LocalSearchBar from "@/components/LocalSearchBar";
 import NoResult from "@/components/NoResult";
-import QuestionCard from "@/components/shared/QuestionCard";
+import QuestionCard from "@/components/shared/cards/QuestionCard";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/HomeFilters";
 import { getQuestion } from "@/lib/actions/question.action";

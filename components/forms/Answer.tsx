@@ -28,7 +28,7 @@ interface Props {
 const Answer = ({ authorId, question, questionId }: Props) => {
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { theme } = useTheme();
+  const { theme } = useTheme() as { theme: string };
   const form = useForm<z.infer<typeof Answers>>({
     resolver: zodResolver(Answers),
     defaultValues: {
@@ -61,7 +61,10 @@ const Answer = ({ authorId, question, questionId }: Props) => {
   return (
     <div>
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
-        <h4 className="paragraph-semibold text-dark400_light800 mt-5">
+        <h4
+          className="paragraph-semibold text-dark400_light800 mt-5
+        "
+        >
           Write your answer here
         </h4>
         <Button className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500">

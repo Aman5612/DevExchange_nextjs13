@@ -31,7 +31,7 @@ interface Props {
 }
 
 const Question = ({ mongoUserId }: Props) => {
-  const { theme } = useTheme();
+  const { theme } = useTheme() as { theme: string };
   const router = useRouter();
   const pathname = usePathname();
   const form = useForm<z.infer<typeof Questions>>({

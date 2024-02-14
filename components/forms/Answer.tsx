@@ -17,8 +17,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
+import { usePathname } from "next/navigation";
 
-const Answer = () => {
+interface Props {
+  authorId: string;
+  question: string;
+  questionId: string;
+}
+
+const Answer = ({ authorId, question, questionId }: Props) => {
+  const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { theme } = useTheme();
   const form = useForm<z.infer<typeof Answers>>({
@@ -27,17 +35,22 @@ const Answer = () => {
       answer: "",
     },
   });
-  const editorRef = useRef();
+  const editorRef = useRef(null);
 
   const handleCreateAnswer = async (values: z.infer<typeof Answers>) => {
     setIsSubmitting(true);
     try {
       await createAnswer({
-        content: values.content,
-        author: JSON.parse(mongoUserId),
+        content: values.answer,
+        author: JSON.parse(authorId),
+        question: JSON.parse(questionId),
         path: pathname,
       });
-      router.push("/");
+      form.reset();
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent("");
+      }
     } catch (error) {
       console.log(error);
       throw error;
@@ -48,7 +61,7 @@ const Answer = () => {
   return (
     <div>
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
-        <h4 className="paragraph-semibold text-dark400_light800">
+        <h4 className="paragraph-semibold text-dark400_light800 mt-5">
           Write your answer here
         </h4>
         <Button className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500">
@@ -121,7 +134,7 @@ const Answer = () => {
           />
           <div className=" flex justify-end">
             <Button
-              type="button"
+              type="submit"
               className="primary-gradient w-fit text-white"
               disabled={isSubmitting}
             >

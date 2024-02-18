@@ -1,9 +1,73 @@
 "use server";
 import Answer from "@/Database/answer.model";
 import { ConnectDataBase } from "../Mongoose";
-import { CreateAnswerParams, GetAnswersParams } from "./shared.type";
+import {
+  AnswerVoteParams,
+  CreateAnswerParams,
+  GetAnswersParams,
+} from "./shared.type";
 import Question from "@/Database/question.model";
 import { revalidatePath } from "next/cache";
+import { ObjectId } from "mongodb";
+
+export async function downVoteAnswer(params: AnswerVoteParams) {
+  const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+  try {
+    ConnectDataBase();
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvotes: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      };
+    } else {
+      updateQuery = { $push: { downvotes: userId } };
+    }
+    await Answer.findOneAndUpdate(
+      { _id: new ObjectId(answerId) },
+      updateQuery,
+      {
+        new: true,
+      }
+    );
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function upVoteAnswer(params: AnswerVoteParams) {
+  const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+  try {
+    ConnectDataBase();
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      };
+    } else {
+      updateQuery = { $push: { upvotes: userId } };
+    }
+    await Answer.findOneAndUpdate(
+      { _id: new ObjectId(answerId) },
+      updateQuery,
+      {
+        new: true,
+      }
+    );
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const createAnswer = async ({
   author,

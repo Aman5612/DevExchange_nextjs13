@@ -8,8 +8,69 @@ import {
   CreateQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
+  QuestionVoteParams,
 } from "./shared.type";
 import User from "@/Database/user.model";
+import { ObjectId } from "mongodb";
+
+export async function upVoteQuestion(params: QuestionVoteParams) {
+  const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
+  try {
+    ConnectDataBase();
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      };
+    } else {
+      updateQuery = { $push: { upvotes: userId } };
+    }
+
+    await Question.findOneAndUpdate(
+      { _id: new ObjectId(questionId) },
+      updateQuery,
+      {
+        new: true,
+      }
+    );
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function downVoteQuestion(params: QuestionVoteParams) {
+  const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
+  try {
+    ConnectDataBase();
+
+    let updateQuery = {};
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvotes: userId } };
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      };
+    } else {
+      updateQuery = { $push: { downvotes: userId } };
+    }
+    await Question.findOneAndUpdate(
+      { _id: new ObjectId(questionId) },
+      updateQuery,
+      { new: true }
+    );
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {

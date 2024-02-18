@@ -74,7 +74,7 @@ const Votes = ({
           path: pathname,
         });
       }
-      // router.push(pathname);
+      router.push(pathname);
     }
   };
 

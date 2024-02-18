@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import Votes from "@/components/shared/Votes";
 
 const page = async ({ params }: any) => {
   const { userId } = auth();
@@ -18,8 +19,9 @@ const page = async ({ params }: any) => {
   if (!userId) redirect("/sign-in");
   const mongoUser = await getUserById({ userId });
   const question = await getQuestionById({ questionId: params._id });
+
   return (
-    <>
+    <section>
       <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
@@ -37,7 +39,18 @@ const page = async ({ params }: any) => {
               {question.author.name}
             </p>
           </Link>
-          <div className="flex justify-end">VOTING</div>
+          <div className="flex justify-end">
+            <Votes
+              type="question"
+              userId={JSON.stringify(mongoUser._id)}
+              questionId={JSON.stringify(question._id)}
+              hasUpVoted={question.upvotes.includes(mongoUser._id)}
+              hadDownVoted={question.downvotes.includes(mongoUser._id)}
+              upvotes={question.upvotes.length}
+              downvotes={question.downvotes.length}
+              hasSaved={mongoUser.saved.includes(mongoUser._id)}
+            />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {question.title}
@@ -79,7 +92,7 @@ const page = async ({ params }: any) => {
       </div>
 
       <AnswerAll
-        userId={JSON.stringify(mongoUser._id)}
+        userId={mongoUser._id}
         questionId={question._id}
         totalAnswers={question.answers.length}
       />
@@ -89,7 +102,7 @@ const page = async ({ params }: any) => {
         authorId={JSON.stringify(mongoUser._id)}
         questionId={JSON.stringify(question._id)}
       />
-    </>
+    </section>
   );
 };
 

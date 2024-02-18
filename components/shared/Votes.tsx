@@ -15,8 +15,8 @@ interface Props {
   upvotes: number;
   downvotes: number;
   userId: string;
-  answerId: string;
-  questionId: string;
+  answerId?: string;
+  questionId?: string;
   hasSaved: boolean;
 }
 

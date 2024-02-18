@@ -7,9 +7,6 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import { getUserById } from "@/lib/actions/user.action";
-import { auth } from "@clerk/nextjs";
-import { GetUserByIdParams } from "@/lib/actions/shared.type";
 
 interface Props {
   userID: string;

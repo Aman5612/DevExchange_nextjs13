@@ -4,11 +4,43 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedQuestionsParams,
   GetUserByIdParams,
   UpdateUserParams,
 } from "./shared.type";
 import { revalidatePath } from "next/cache";
 import Question from "@/Database/question.model";
+
+export async function toggleSave(params: GetSavedQuestionsParams) {
+  const { clerkId, page, pageSize, filter, searchQuery } = params;
+  try {
+    ConnectDataBase();
+
+    let updateQuery = {};
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      };
+    } else {
+      updateQuery = { $push: { upvotes: userId } };
+    }
+
+    await Question.findOneAndUpdate(
+      { _id: new ObjectId(questionId) },
+      updateQuery,
+      {
+        new: true,
+      }
+    );
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export async function deleteUser(params: DeleteUserParams) {
   try {

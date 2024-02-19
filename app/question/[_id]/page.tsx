@@ -48,7 +48,7 @@ const page = async ({ params }: any) => {
               hadDownVoted={question.downvotes.includes(mongoUser._id)}
               upvotes={question.upvotes.length}
               downvotes={question.downvotes.length}
-              hasSaved={mongoUser.saved.includes(mongoUser._id)}
+              hasSaved={mongoUser.saved.includes(question._id)}
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ const page = async ({ params }: any) => {
       </div>
 
       <AnswerAll
-        userId={mongoUser._id}
+        userID={mongoUser._id}
         questionId={question._id}
         totalAnswers={question.answers.length}
       />

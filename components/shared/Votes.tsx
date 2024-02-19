@@ -4,6 +4,7 @@ import {
   upVoteQuestion,
   downVoteQuestion,
 } from "@/lib/actions/question.action";
+import { toggleSave } from "@/lib/actions/user.action";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -15,8 +16,8 @@ interface Props {
   upvotes: number;
   downvotes: number;
   userId: string;
-  answerId: string;
-  questionId: string;
+  answerId?: string;
+  questionId?: string;
   hasSaved: boolean;
 }
 
@@ -33,6 +34,15 @@ const Votes = ({
 }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+
+  const handleSave = async () => {
+    await toggleSave({
+      questionId: JSON.parse(questionId),
+      userId: JSON.parse(userId),
+      path: pathname,
+    });
+    router.push(pathname);
+  };
 
   const handleVote = async (action: any) => {
     if (type === "question") {
@@ -74,7 +84,7 @@ const Votes = ({
           path: pathname,
         });
       }
-      // router.push(pathname);
+      router.push(pathname);
     }
   };
 
@@ -119,17 +129,22 @@ const Votes = ({
           </span>
         </div>
       </div>
-      <Image
-        className=" ml-4 cursor-pointer"
-        src={
-          hasSaved
-            ? "/assets/icons/star-filled.svg"
-            : "/assets/icons/star-red.svg"
-        }
-        width={18}
-        height={18}
-        alt="downvote"
-      />
+      {type === "question" ? (
+        <Image
+          className=" ml-4 cursor-pointer"
+          src={
+            hasSaved
+              ? "/assets/icons/star-filled.svg"
+              : "/assets/icons/star-red.svg"
+          }
+          onClick={() => handleSave()}
+          width={18}
+          height={18}
+          alt="downvote"
+        />
+      ) : (
+        " "
+      )}
     </div>
   );
 };

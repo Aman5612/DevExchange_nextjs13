@@ -7,10 +7,9 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {
-  userId: string;
+  userID: string;
   questionId: string;
   totalAnswers: number;
   page?: number;
@@ -18,16 +17,14 @@ interface Props {
 }
 
 const AnswerAll = async ({
-  userId,
+  userID,
   questionId,
   totalAnswers,
   page,
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
-  const mongoUser = await getUserById({ userId });
-  console.log(mongoUser);
-  console.log(userId);
+
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
@@ -62,14 +59,14 @@ const AnswerAll = async ({
                 <div className="flex justify-end ">
                   <Votes
                     type="answer"
-                    userId={JSON.stringify(userId)}
+                    userId={JSON.stringify(userID)}
                     answerId={JSON.stringify(answer._id)}
-                    questionId={questionId}
-                    hasUpVoted={answer.upvotes.includes(userId)}
-                    hadDownVoted={answer.downvotes.includes(userId)}
+                    questionId={JSON.stringify(questionId)}
+                    hasUpVoted={answer.upvotes.includes(userID)}
+                    hadDownVoted={answer.downvotes.includes(userID)}
                     upvotes={answer.upvotes.length}
                     downvotes={answer.downvotes.length}
-                    // hasSaved={mongoUser.saved.includes(userId)}
+                    // hasSaved={mongoUser.saved.includes(mongoUser._id)}
                   />
                 </div>
               </div>

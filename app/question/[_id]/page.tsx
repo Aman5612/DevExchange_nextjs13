@@ -42,14 +42,13 @@ const page = async ({ params }: any) => {
           <div className="flex justify-end">
             <Votes
               type="question"
-              answerId={""}
               userId={JSON.stringify(mongoUser._id)}
               questionId={JSON.stringify(question._id)}
               hasUpVoted={question.upvotes.includes(mongoUser._id)}
               hadDownVoted={question.downvotes.includes(mongoUser._id)}
               upvotes={question.upvotes.length}
               downvotes={question.downvotes.length}
-              hasSaved={mongoUser.saved.includes(mongoUser._id)}
+              hasSaved={mongoUser.saved.includes(question._id)}
             />
           </div>
         </div>

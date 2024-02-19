@@ -13,6 +13,7 @@ import {
 import User from "@/Database/user.model";
 import { ObjectId } from "mongodb";
 
+
 export async function upVoteQuestion(params: QuestionVoteParams) {
   const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
   try {

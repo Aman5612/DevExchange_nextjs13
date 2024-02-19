@@ -48,7 +48,7 @@ const AnswerAll = async ({
                     alt="profile"
                     className="rounded-full object-cover max-sm:mt-0.5"
                   />
-                  <div className="flex flex-col sm:flex-row sm:items-center">
+                  <div className="text-dark400_light700 flex flex-col sm:flex-row sm:items-center">
                     <p>{answer.author.name}</p>
 
                     <p className="small-regular text-light400_light500 mt-0.5 line-clamp-1">
@@ -56,7 +56,7 @@ const AnswerAll = async ({
                     </p>
                   </div>
                 </Link>
-                <div className="flex justify-end ">
+                <span>
                   <Votes
                     type="answer"
                     userId={JSON.stringify(userID)}
@@ -68,7 +68,7 @@ const AnswerAll = async ({
                     downvotes={answer.downvotes.length}
                     // hasSaved={mongoUser.saved.includes(mongoUser._id)}
                   />
-                </div>
+                </span>
               </div>
             </div>
             <ParseHTML data={answer.content} />

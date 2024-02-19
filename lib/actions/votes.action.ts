@@ -1,3 +1,5 @@
+"use server";
+
 import Question from "@/Database/question.model";
 import { ConnectDataBase } from "../Mongoose";
 import { QuestionVoteParams } from "./shared.type";

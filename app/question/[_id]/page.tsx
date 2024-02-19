@@ -19,9 +19,10 @@ const page = async ({ params }: any) => {
   if (!userId) redirect("/sign-in");
   const mongoUser = await getUserById({ userId });
   const question = await getQuestionById({ questionId: params._id });
+  console.log("question");
 
   return (
-    <section>
+    <>
       <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
@@ -62,24 +63,26 @@ const page = async ({ params }: any) => {
           alt="clock-icon"
           value={`asked ${getTimestamp(question.createdAt)}`}
           title="Asked"
-          textStyles="small-medium text-dark400_ligh800"
+          textStyles="small-medium text-dark400_light700"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(question.answers.length)}
           title="Answers"
-          textStyles="small-medium text-dark400_ligh800"
+          textStyles="small-medium text-dark400_light700"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="eye"
           value={formatAndDivideNumber(question.views)}
           title="Views"
-          textStyles="small-medium text-dark400_ligh800"
+          textStyles="small-medium text-dark400_light700"
         />
       </div>
-      <ParseHTML data={question.content} />
+      <span className="text-dark400_light700 w-auto">
+        <ParseHTML data={question.content} />
+      </span>
       <div className="mt-8 flex flex-wrap gap-2">
         {question.tags.map((tag: any) => (
           <RenderTags
@@ -102,7 +105,7 @@ const page = async ({ params }: any) => {
         authorId={JSON.stringify(mongoUser._id)}
         questionId={JSON.stringify(question._id)}
       />
-    </section>
+    </>
   );
 };
 

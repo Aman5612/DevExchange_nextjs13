@@ -1,3 +1,4 @@
+"user server";
 import User from "@/Database/user.model";
 import { ConnectDataBase } from "../Mongoose";
 import { redirect } from "next/navigation";

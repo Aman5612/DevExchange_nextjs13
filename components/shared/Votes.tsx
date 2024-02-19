@@ -1,5 +1,6 @@
 "use client";
 import { downVoteAnswer, upVoteAnswer } from "@/lib/actions/answer.action";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 import {
   upVoteQuestion,
   downVoteQuestion,
@@ -7,7 +8,7 @@ import {
 import { toggleSave } from "@/lib/actions/user.action";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface Props {
   type: string;
@@ -41,7 +42,6 @@ const Votes = ({
       userId: JSON.parse(userId),
       path: pathname,
     });
-    router.push(pathname);
   };
 
   const handleVote = async (action: any) => {
@@ -64,7 +64,6 @@ const Votes = ({
           path: pathname,
         });
       }
-      router.push(pathname);
     } else if (type === "answer") {
       if (action === "upvote") {
         await upVoteAnswer({
@@ -84,10 +83,15 @@ const Votes = ({
           path: pathname,
         });
       }
-      router.push(pathname);
     }
   };
 
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(questionId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    });
+  }, [questionId, userId, router, pathname]);
   return (
     <div className="flex gap-3">
       <div className=" flex gap-2">
@@ -103,7 +107,7 @@ const Votes = ({
           alt="downvote"
           onClick={() => handleVote("upvote")}
         />
-        <div className="background-light700_dark400 flex size-[18px] items-center justify-center rounded-sm">
+        <div className="background-light700_dark400  flex size-[18px] items-center justify-center rounded-sm">
           <span className="text-dark400_light700 subtle-medium ">
             {upvotes}
           </span>

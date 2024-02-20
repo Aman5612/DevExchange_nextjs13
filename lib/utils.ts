@@ -22,3 +22,16 @@ export const getTimestamp = (createdAt: Date) => {
   const timestamp = moment(createdAt).fromNow();
   return timestamp;
 };
+
+export const getJoinedDate = (date: Date): string => {
+  if (!date) {
+    return "Date not available";
+  }
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+  };
+
+  return new Intl.DateTimeFormat("en-US", options).format(date);
+};

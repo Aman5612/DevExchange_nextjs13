@@ -19,7 +19,6 @@ const page = async ({ params }: any) => {
   if (!userId) redirect("/sign-in");
   const mongoUser = await getUserById({ userId });
   const question = await getQuestionById({ questionId: params._id });
-  console.log("question");
 
   return (
     <>

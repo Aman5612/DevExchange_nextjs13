@@ -1,13 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
 
 const LeftSideBar = () => {
+  const { userId } = useAuth();
   const pathName = usePathname();
   return (
     <section className="light-border background-light900_dark200 custom-scrollbar sticky left-0 top-0 flex h-screen flex-col overflow-y-auto border-r-[1px] p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
@@ -16,6 +17,14 @@ const LeftSideBar = () => {
           const isActive =
             (pathName.includes(item.route) && item.route.length > 1) ||
             item.route === pathName;
+
+          if (item.route === "/profile/") {
+            if (userId) {
+              item.route = `/profile/${userId}`;
+            } else {
+              return null;
+            }
+          }
           return (
             <Link
               href={item.route}

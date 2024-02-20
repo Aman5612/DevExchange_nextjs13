@@ -5,6 +5,7 @@ import moment from "moment";
 import RenderTags from "../RenderTags";
 
 interface Props {
+  clerkId?: string;
   _id: number;
   title: string;
   key: number;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   title,
   tags,
@@ -58,7 +60,7 @@ const QuestionCard = ({
         })}
       </div>
 
-      <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start ">
+      <div className="flex items-center justify-between gap-3 max-md:flex-wrap max-sm:flex-wrap max-sm:justify-start ">
         <div className="flex  gap-[5px]">
           <div className="flex gap-[4px] ">
             <Image
@@ -87,7 +89,7 @@ const QuestionCard = ({
               width={16}
             />
             <p className="text-dark400_light700 flex items-center gap-1 text-[12px]">
-              <span>{1}</span> Votes
+              <span>{upVotes.length}</span> Votes
             </p>
           </div>
           <div className="flex gap-1">
@@ -109,7 +111,7 @@ const QuestionCard = ({
               width={16}
             />
             <p className="text-dark400_light700 flex items-center gap-1 text-[12px]">
-              <span>1.2k</span>Votes
+              <span>{views}</span>Views
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     imgURL: "/assets/icons/user.svg",
-    route: "/profile",
+    route: "/profile/",
     label: "Profile",
   },
   {

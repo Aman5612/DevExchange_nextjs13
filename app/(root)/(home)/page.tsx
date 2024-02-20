@@ -7,15 +7,10 @@ import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/HomeFilters";
 import { getQuestion } from "@/lib/actions/question.action";
 import Link from "next/link";
-// import { userStatus } from "@/lib/actions/status.action";
-// import { auth } from "@clerk/nextjs";
-// import { useEffect, useState } from "react";
 
 export default async function Home() {
   const mongoQuestions = await getQuestion({});
-  // const { userId } = auth();
-  // const isloggedIn = await userStatus({ userId });
-  // console.log("new2", isloggedIn);
+
   return (
     <div className="  sticky mx-auto flex w-full flex-col gap-[40px]">
       <div className="flex flex-col gap-[30px] ">
@@ -50,7 +45,7 @@ export default async function Home() {
                 title={question.title}
                 tags={question.tags}
                 author={question.author}
-                upVotes={question.upVotes}
+                upVotes={question.upvotes}
                 views={question.views}
                 answers={question.answers}
                 createdAt={question.createdAt}

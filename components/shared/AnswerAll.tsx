@@ -26,7 +26,7 @@ const AnswerAll = async ({
   const result = await getAnswers({ questionId });
 
   return (
-    <div className="mt-11">
+    <div className="mt-11 max-w-3xl">
       <div className="flex items-center justify-between">
         <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
         <Filter filters={AnswerFilters} />

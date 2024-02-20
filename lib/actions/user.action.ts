@@ -12,9 +12,27 @@ import {
 import { revalidatePath } from "next/cache";
 import Question from "@/Database/question.model";
 import User from "@/Database/user.model";
-import { match } from "assert";
+
 import { FilterQuery } from "mongoose";
 import Tag from "@/Database/tag.model";
+import Answer from "@/Database/answer.model";
+
+export const getuserInfo = async (params: GetUserByIdParams) => {
+  try {
+    ConnectDataBase();
+    const { userId } = params;
+    const user = await User.findOne({ clerkId: userId });
+
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    return {
+      user,
+      totalQuestions,
+      totalAnswers,
+    };
+  } catch (error) {}
+};
 
 export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {

@@ -28,7 +28,11 @@ const page = async () => {
       <div className="mt-12 flex flex-wrap gap-4">
         {result.tags.length > 0 ? (
           result.tags.map((tag) => {
-            return <TagCard key={tag._id} Tags={tag} />;
+            return (
+              <Link href={`/${tag._id}`} key={tag._id}>
+                <TagCard key={tag._id} Tags={tag} />
+              </Link>
+            );
           })
         ) : (
           <div className="mx-auto mt-12 flex flex-col items-center">

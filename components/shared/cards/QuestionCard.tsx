@@ -5,6 +5,7 @@ import moment from "moment";
 import RenderTags from "../RenderTags";
 
 interface Props {
+  clerkId?: string;
   _id: number;
   title: string;
   key: number;
@@ -17,13 +18,14 @@ interface Props {
     name: string;
     picture: string;
   };
-  upVotes: number;
+  upVotes: Array<object>;
   views: number;
-  answers: number;
+  answers: Array<object>;
   createdAt: Date;
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   title,
   tags,
@@ -36,7 +38,7 @@ const QuestionCard = ({
 }: Props) => {
   const authorName = author.name;
   return (
-    <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[45px] py-[36px] shadow">
+    <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[20px] py-[36px] shadow">
       <div>
         <Link href={`/question/${_id}`}>
           {" "}
@@ -58,8 +60,8 @@ const QuestionCard = ({
         })}
       </div>
 
-      <div className="flex justify-between">
-        <div className="flex gap-[5px]">
+      <div className="flex items-center justify-between gap-3 max-md:flex-wrap max-sm:flex-wrap max-sm:justify-start ">
+        <div className="flex  gap-[5px]">
           <div className="flex gap-[4px] ">
             <Image
               className="rounded-full"
@@ -68,7 +70,7 @@ const QuestionCard = ({
               width={20}
               alt="user"
             />
-            <p className="flex items-center font-inter text-[14px] font-medium">
+            <p className="text-dark400_light700 flex items-center font-inter text-[14px] font-medium">
               {authorName}
             </p>
           </div>
@@ -79,37 +81,37 @@ const QuestionCard = ({
         </div>
 
         <div className="flex gap-[9px]">
-          <div className=" flex">
+          <div className=" flex gap-1">
             <Image
-              src="assets/icons/like.svg"
+              src="/assets/icons/like.svg"
               alt="vote"
               height={16}
               width={16}
             />
-            <p className="flex items-center text-[12px]">
-              <span>1.2k</span>Votes
+            <p className="text-dark400_light700 flex items-center gap-1 text-[12px]">
+              <span>{upVotes.length}</span> Votes
             </p>
           </div>
-          <div className="flex">
+          <div className="flex gap-1">
             <Image
-              src="assets/icons/message.svg"
+              src="/assets/icons/message.svg"
               alt="vote"
               height={16}
               width={16}
             />
-            <p className="flex items-center text-[12px]">
-              <span>1.2k</span>Votes
+            <p className="text-dark400_light700 flex items-center gap-1 text-[12px]">
+              <span>{answers.length}</span>Answers
             </p>
           </div>
-          <div className="flex ">
+          <div className="flex gap-1 ">
             <Image
-              src="assets/icons/eye.svg"
+              src="/assets/icons/eye.svg"
               alt="vote"
               height={16}
               width={16}
             />
-            <p className="flex items-center text-[12px]">
-              <span>1.2k</span>Votes
+            <p className="text-dark400_light700 flex items-center gap-1 text-[12px]">
+              <span>{views}</span>Views
             </p>
           </div>
         </div>

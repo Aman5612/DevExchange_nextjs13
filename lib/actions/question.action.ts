@@ -1,5 +1,4 @@
 "use server";
-
 import Question from "@/Database/question.model";
 import { revalidatePath } from "next/cache";
 import { ConnectDataBase } from "../Mongoose";
@@ -12,7 +11,6 @@ import {
 } from "./shared.type";
 import User from "@/Database/user.model";
 import { ObjectId } from "mongodb";
-
 
 export async function upVoteQuestion(params: QuestionVoteParams) {
   const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
@@ -126,7 +124,7 @@ export async function createQuestion(params: CreateQuestionParams) {
         {
           name: { $regex: new RegExp(`^${tag}$`, "i") },
         },
-        { $setOnInsert: { name: tag }, $push: { question: question._id } },
+        { $setOnInsert: { name: tag }, $push: { questions: question._id } },
         { upsert: true, new: true }
       );
 

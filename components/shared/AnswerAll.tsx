@@ -7,7 +7,6 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import { get } from "http";
 import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {

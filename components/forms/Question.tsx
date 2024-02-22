@@ -43,7 +43,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
     defaultValues: {
       title: questionObject?.title,
       explanation: " ",
-      tags: [],
+      tags: questionObject?.tags.map((tag: any) => tag.name) || [],
     },
   });
 
@@ -69,10 +69,6 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
           author: JSON.parse(mongoUserId),
           path: pathname,
         });
-        toast({
-          title: "Question Posted Successfully",
-        });
-        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -263,7 +259,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
           )}
         />
         <Button
-          // type="submit"
+          type="submit"
           className="primary-gradient w-fit !text-light-900"
           disabled={isSubmitting}
         >

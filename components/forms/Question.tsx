@@ -43,7 +43,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
     defaultValues: {
       title: questionObject?.title,
       explanation: " ",
-      tags: questionObject?.tags.map((tag) => tag.name) || [],
+      tags: [],
     },
   });
 
@@ -69,6 +69,10 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
           author: JSON.parse(mongoUserId),
           path: pathname,
         });
+        toast({
+          title: "Question Posted Successfully",
+        });
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -116,7 +120,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
   };
   const editorRef = useRef(null);
 
-  const type: any = "";
+  // const type: any = "";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -259,7 +263,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
           )}
         />
         <Button
-          type="submit"
+          // type="submit"
           className="primary-gradient w-fit !text-light-900"
           disabled={isSubmitting}
         >

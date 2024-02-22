@@ -41,6 +41,7 @@ const QuestionCard = ({
 }: Props) => {
   const authorName = author.name;
   const showEditDeleteAction = clerkId === author.clerkId && clerkId;
+
   return (
     <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[20px] py-[36px] shadow">
       <div className="flex justify-between">

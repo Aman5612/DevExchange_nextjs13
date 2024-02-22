@@ -1,14 +1,12 @@
-import { SearchParamsProps } from "@/types";
 import AnswerCard from "./AnswerCard";
 import { getUserAnswer } from "@/lib/actions/user.action";
 
-interface Props extends SearchParamsProps {
-  searchProps: SearchParamsProps;
+interface Props {
   userId: string;
   clerkId?: string;
 }
 
-const AnswersTab = async ({ searchProps, userId, clerkId }: Props) => {
+const AnswersTab = async ({ userId, clerkId }: Props) => {
   const result = await getUserAnswer({ userId });
 
   return (

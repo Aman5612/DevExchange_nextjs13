@@ -12,7 +12,7 @@ import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
 
-const page = async ({ params, searchParams }: URLProps) => {
+const page = async ({ params }: URLProps) => {
   const userInfo = await getuserInfo({ userId: params.id });
   console.log(userInfo?.totalQuestions);
   return (
@@ -89,14 +89,12 @@ const page = async ({ params, searchParams }: URLProps) => {
           </TabsList>
           <TabsContent value="top-posts">
             <QuestionsTab
-              searchProps={searchParams}
               userId={userInfo?.user._id}
               clerkId={userInfo?.user.clerkId}
             />
           </TabsContent>
           <TabsContent value="answers">
             <AnswersTab
-              searchProps={searchParams}
               userId={userInfo?.user._id}
               clerkId={userInfo?.user.clerkId}
             />

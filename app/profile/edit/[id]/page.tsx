@@ -14,7 +14,7 @@ const EditQuestions = async ({ params }: Props) => {
 
   if (!userId) redirect("/sign-in");
   const mongoUser = await getUserById({ userId });
-  const question = await getQuestionById({ questionId: params.id });
+  const question = await getQuestionById({ questionId: params });
   return (
     <div>
       <h1 className="h1-bold text-dark100_light900 ">Edit question</h1>

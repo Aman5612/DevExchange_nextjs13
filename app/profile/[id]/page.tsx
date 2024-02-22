@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { getuserInfo } from "@/lib/actions/user.action";
 import { URLProps } from "@/types";
-// import { SignedIn, auth } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getJoinedDate } from "@/lib/utils";
-import { SignedIn } from "@clerk/nextjs";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
+import AnswersTab from "@/components/shared/AnswersTab";
 
 const page = async (params, searchParams: URLProps) => {
   const userInfo = await getuserInfo({ userId: params.params.id });
@@ -94,7 +94,13 @@ const page = async (params, searchParams: URLProps) => {
               clerkId={userInfo?.user.clerkId}
             />
           </TabsContent>
-          <TabsContent value="answers">ANSWERS.</TabsContent>
+          <TabsContent value="answers">
+            <AnswersTab
+              searchProps={searchParams}
+              userId={userInfo?.user._id}
+              clerkId={userInfo?.user.clerkId}
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </>

@@ -4,11 +4,25 @@ import { ConnectDataBase } from "../Mongoose";
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.type";
 import Question from "@/Database/question.model";
 import { revalidatePath } from "next/cache";
 import { ObjectId } from "mongodb";
+
+export const deleteAnswer = async (params: DeleteAnswerParams) => {
+  try {
+    ConnectDataBase();
+    const { answerId, path } = params;
+    await Answer.deleteOne({ _id: answerId });
+    await Question.updateOne(
+      { answer: answerId },
+      { $pull: { answers: answerId } }
+    );
+    revalidatePath(path);
+  } catch (error) {}
+};
 
 export async function downVoteAnswer(params: AnswerVoteParams) {
   const { answerId, userId, hasupVoted, hasdownVoted, path } = params;

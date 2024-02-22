@@ -19,7 +19,7 @@ import Tag from "@/Database/tag.model";
 import Answer from "@/Database/answer.model";
 
 export const getUserAnswer = async (params: GetUserStatsParams) => {
-  const { userId, page = 1, pageSize = 10 } = params;
+  const { userId } = params;
   ConnectDataBase();
   try {
     const totalAnswers = await Answer.countDocuments({ author: userId });
@@ -46,7 +46,7 @@ export const getUserAnswer = async (params: GetUserStatsParams) => {
 };
 
 export const getUserQuestions = async (params: GetUserStatsParams) => {
-  const { userId, page = 1, pageSize = 10 } = params;
+  const { userId } = params;
   ConnectDataBase();
   try {
     const totalQuestions = await Question.countDocuments({ author: userId });
@@ -92,7 +92,7 @@ export const getuserInfo = async (params: GetUserByIdParams) => {
 export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     await ConnectDataBase();
-    const { clerkId, page, pageSize, searchQuery, filter } = params;
+    const { clerkId, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {
   userID: string;
@@ -24,6 +25,7 @@ const AnswerAll = async ({
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
+  const mongouser = await getUserById({ userId: userID });
 
   return (
     <div className="mt-11 max-w-3xl">
@@ -66,7 +68,7 @@ const AnswerAll = async ({
                     hadDownVoted={answer.downvotes.includes(userID)}
                     upvotes={answer.upvotes.length}
                     downvotes={answer.downvotes.length}
-                    // hasSaved={mongoUser.saved.includes(mongoUser._id)}
+                    hasSaved={mongouser.saved.includes(mongouser._id)}
                   />
                 </span>
               </div>

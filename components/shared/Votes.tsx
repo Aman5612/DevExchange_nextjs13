@@ -38,7 +38,7 @@ const Votes = ({
 
   const handleSave = async () => {
     await toggleSave({
-      questionId: JSON.parse(questionId),
+      questionId: JSON.parse(questionId || "null"),
       userId: JSON.parse(userId),
       path: pathname,
     });
@@ -50,7 +50,7 @@ const Votes = ({
         await upVoteQuestion({
           hasupVoted: hasUpVoted,
           hasdownVoted: hadDownVoted,
-          questionId: JSON.parse(questionId),
+          questionId: JSON.parse(questionId || "null"),
           userId: JSON.parse(userId),
           path: pathname,
         });
@@ -59,7 +59,7 @@ const Votes = ({
         await downVoteQuestion({
           hasupVoted: hasUpVoted,
           hasdownVoted: hadDownVoted,
-          questionId: JSON.parse(questionId),
+          questionId: JSON.parse(questionId || "null"),
           userId: JSON.parse(userId),
           path: pathname,
         });
@@ -69,7 +69,7 @@ const Votes = ({
         await upVoteAnswer({
           hasupVoted: hasUpVoted,
           hasdownVoted: hadDownVoted,
-          answerId: JSON.parse(answerId),
+          answerId: JSON.parse(answerId || "null"),
           userId: JSON.parse(userId),
           path: pathname,
         });
@@ -78,7 +78,7 @@ const Votes = ({
         await downVoteAnswer({
           hasupVoted: hasUpVoted,
           hasdownVoted: hadDownVoted,
-          answerId: JSON.parse(answerId),
+          answerId: JSON.parse(answerId || "null"),
           userId: JSON.parse(userId),
           path: pathname,
         });
@@ -88,7 +88,7 @@ const Votes = ({
 
   useEffect(() => {
     viewQuestion({
-      questionId: JSON.parse(questionId),
+      questionId: JSON.parse(questionId || "null"),
       userId: userId ? JSON.parse(userId) : undefined,
     });
   }, [questionId, userId, router, pathname]);

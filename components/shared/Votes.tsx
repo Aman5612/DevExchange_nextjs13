@@ -19,7 +19,7 @@ interface Props {
   userId: string;
   answerId?: string;
   questionId?: string;
-  hasSaved: boolean;
+  hasSaved?: boolean;
 }
 
 const Votes = ({

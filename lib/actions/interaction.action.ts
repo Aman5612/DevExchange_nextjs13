@@ -6,7 +6,7 @@ import { ViewQuestionParams } from "./shared.type";
 import Interaction from "@/Database/interaction.model";
 
 export const viewQuestion = async (params: ViewQuestionParams) => {
-  const { questionId, userId, action, answerId, tags, createdAt } = params;
+  const { questionId, userId } = params;
   try {
     await ConnectDataBase();
     await Question.findByIdAndUpdate(questionId, {

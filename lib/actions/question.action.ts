@@ -5,12 +5,31 @@ import { ConnectDataBase } from "../Mongoose";
 import Tag from "@/Database/tag.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
 } from "./shared.type";
 import User from "@/Database/user.model";
 import { ObjectId } from "mongodb";
+import Answer from "@/Database/answer.model";
+import Interaction from "@/Database/interaction.model";
+
+export const deleteQuestion = async (params: DeleteQuestionParams) => {
+  try {
+    ConnectDataBase();
+    const { questionId, path } = params;
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } }
+    );
+    await Interaction.deleteMany({ question: questionId });
+    revalidatePath(path);
+  } catch (error) {}
+};
 
 export async function upVoteQuestion(params: QuestionVoteParams) {
   const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
@@ -134,6 +153,28 @@ export async function createQuestion(params: CreateQuestionParams) {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    await ConnectDataBase();
+
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findById(questionId).populate("tags");
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    question.title = title;
+    question.content = content;
+
+    await question.save();
 
     revalidatePath(path);
   } catch (error) {

@@ -1,7 +1,6 @@
 import { SearchParamsProps } from "@/types";
 import QuestionCard from "./cards/QuestionCard";
-
-import { getUserQuestions } from "@/lib/actions/votes.action";
+import { getUserQuestions } from "@/lib/actions/user.action";
 
 interface Props extends SearchParamsProps {
   searchProps: SearchParamsProps;
@@ -17,7 +16,7 @@ const QuestionsTab = async ({ searchProps, userId, clerkId }: Props) => {
         <QuestionCard
           _id={question._id}
           key={question._id}
-          clerkId={userId}
+          clerkId={clerkId}
           title={question.title}
           tags={question.tags}
           author={question.author}

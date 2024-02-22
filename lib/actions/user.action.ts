@@ -6,6 +6,7 @@ import {
   GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.type";
@@ -16,6 +17,60 @@ import User from "@/Database/user.model";
 import { FilterQuery } from "mongoose";
 import Tag from "@/Database/tag.model";
 import Answer from "@/Database/answer.model";
+
+export const getUserAnswer = async (params: GetUserStatsParams) => {
+  const { userId, page = 1, pageSize = 10 } = params;
+  ConnectDataBase();
+  try {
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const userAnswers = await Answer.find({ author: userId })
+      .populate([
+        {
+          path: "author",
+          model: "User",
+          select: "name username picture clerkId",
+        },
+        {
+          path: "question",
+          model: "Question",
+          select: "title _id",
+        },
+      ])
+      .sort({ upvotes: -1 });
+
+    return { totalAnswers, answers: userAnswers };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
+export const getUserQuestions = async (params: GetUserStatsParams) => {
+  const { userId, page = 1, pageSize = 10 } = params;
+  ConnectDataBase();
+  try {
+    const totalQuestions = await Question.countDocuments({ author: userId });
+    const userQuestions = await Question.find({ author: userId })
+      .populate([
+        {
+          path: "author",
+          model: "User",
+          select: "name username picture clerkId",
+        },
+        {
+          path: "tags",
+          model: "Tag",
+          select: "name",
+        },
+      ])
+      .sort({ views: -1, upvotes: -1 });
+
+    return { totalQuestions, questions: userQuestions };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
 
 export const getuserInfo = async (params: GetUserByIdParams) => {
   try {

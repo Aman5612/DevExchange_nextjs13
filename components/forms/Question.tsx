@@ -22,40 +22,60 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   mongoUserId: string;
+  questionDetails?: string;
+  type2?: string;
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
+  const questionObject = questionDetails ? JSON.parse(questionDetails) : null;
   const { theme } = useTheme() as { theme: string };
   const router = useRouter();
   const pathname = usePathname();
   const form = useForm<z.infer<typeof Questions>>({
     resolver: zodResolver(Questions),
     defaultValues: {
-      title: " ",
-      explanation: "",
-      tags: [],
+      title: questionObject?.title,
+      explanation: " ",
+      tags: questionObject?.tags.map((tag) => tag.name) || [],
     },
   });
 
   async function onSubmit(values: z.infer<typeof Questions>) {
     setIsSubmitting(true);
     try {
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
-      router.push("/");
+      if (type2 === "edit") {
+        await editQuestion({
+          questionId: questionObject._id,
+          title: values.title,
+          content: values.explanation,
+          path: pathname,
+        });
+        toast({
+          title: "Question Edited Successfully",
+        });
+        router.push(`/question/${questionObject._id}`);
+      } else {
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
+      }
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Error",
+        description: "An error occurred while posting. Please try again.",
+      });
       throw error;
     } finally {
       setIsSubmitting(false);
@@ -148,7 +168,7 @@ const Question = ({ mongoUserId }: Props) => {
                   onEditorChange={(content) => {
                     field.onChange(content);
                   }}
-                  initialValue=""
+                  initialValue={type2 === "edit" ? questionObject.content : " "}
                   init={{
                     height: 350,
                     menubar: false,
@@ -200,14 +220,22 @@ const Question = ({ mongoUserId }: Props) => {
                 <>
                   <Input
                     className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                    onKeyDown={(e) => handleKeyDown(e, field)}
+                    onKeyDown={
+                      type2 !== "edit"
+                        ? (e) => handleKeyDown(e, field)
+                        : () => {}
+                    }
                   />
                   <div className="flex-start mt-2.5 gap-2.5">
                     {field.value.map((tag: any) => (
                       <Badge
                         key={tag}
                         className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize "
-                        onClick={() => handleTagRemove(tag, field)}
+                        onClick={
+                          type2 !== "edit"
+                            ? () => handleTagRemove(tag, field)
+                            : () => {}
+                        }
                       >
                         {tag}
                         <Image
@@ -236,9 +264,9 @@ const Question = ({ mongoUserId }: Props) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <>{type === "edit" ? "Editing..." : "Posting..."}</>
+            <>{type2 === "edit" ? "Editing..." : "Posting..."}</>
           ) : (
-            <>{type === "edit" ? "Edit Question" : "Ask a Question"}</>
+            <>{type2 === "edit" ? "Edit Question" : "Ask a Question"}</>
           )}
         </Button>
       </form>

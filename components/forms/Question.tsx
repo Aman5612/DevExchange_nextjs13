@@ -116,7 +116,7 @@ const Question = ({ mongoUserId, type2, questionDetails }: Props) => {
   };
   const editorRef = useRef(null);
 
-  const type: any = "";
+  // const type: any = "";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

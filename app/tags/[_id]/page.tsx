@@ -26,7 +26,7 @@ export default async function Home({ params }: any) {
       </div>
       <div className=" flex w-full flex-col gap-[20px]">
         {mongoQuestions.questions.length > 0 ? (
-          mongoQuestions.questions.map((question) => {
+          mongoQuestions.questions.map((question: any) => {
             return (
               <QuestionCard
                 _id={question._id}

@@ -6,7 +6,7 @@ import { getUserById } from "@/lib/actions/user.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 
 interface Props {
-  itemId: string;
+  params: string;
 }
 
 const EditQuestions = async ({ params }: Props) => {

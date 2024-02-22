@@ -12,8 +12,8 @@ import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
 
-const page = async (params, searchParams: URLProps) => {
-  const userInfo = await getuserInfo({ userId: params.params.id });
+const page = async ({ params, searchParams }: URLProps) => {
+  const userInfo = await getuserInfo({ userId: params.id });
   console.log(userInfo?.totalQuestions);
   return (
     <>

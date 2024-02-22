@@ -25,7 +25,9 @@ const AnswerAll = async ({
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
-  const mongouser = await getUserById({ userId: userID });
+  const mongouser = await getUserById({ userId: JSON.stringify(userID) });
+  console.log(mongouser);
+  console.log(userID);
 
   return (
     <div className="mt-11 max-w-3xl">
@@ -68,7 +70,6 @@ const AnswerAll = async ({
                     hadDownVoted={answer.downvotes.includes(userID)}
                     upvotes={answer.upvotes.length}
                     downvotes={answer.downvotes.length}
-                    hasSaved={mongouser.saved.includes(mongouser._id)}
                   />
                 </span>
               </div>

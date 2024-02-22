@@ -213,6 +213,7 @@ export const getUserById = async (params: GetUserByIdParams) => {
   try {
     await ConnectDataBase();
     const { userId } = params;
+    console.log(userId);
     const user = await User.findOne({ clerkId: userId });
     return user || null;
   } catch (error) {

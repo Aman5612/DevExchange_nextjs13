@@ -178,6 +178,31 @@ export async function deleteUser(params: DeleteUserParams) {
   }
 }
 
+export const editUser = async (params: any) => {
+  try {
+    await ConnectDataBase();
+    const { clerkId, name, username, location, bio, portfolio, path } = params;
+
+    const updateQuery = {
+      $pull: [
+        { name: clerkId },
+        { username: clerkId },
+        { location: clerkId },
+        { bio: clerkId },
+        { portfolio: clerkId },
+      ],
+      $push: { name, username, location, bio, portfolio },
+    };
+
+    await User.findOneAndUpdate({ clerkId }, updateQuery, {
+      new: true,
+    });
+    revalidatePath(path);
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+};
 export const updateUser = async (params: UpdateUserParams) => {
   try {
     await ConnectDataBase();

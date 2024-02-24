@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
 export interface IUser extends Document {
   clerkId: string;
@@ -8,7 +8,7 @@ export interface IUser extends Document {
   password?: string;
   bio?: string;
   picture: string;
-  // location?: string;
+  location?: string;
   portfolioWebsite?: string;
   reputation?: number;
   saved: Schema.Types.ObjectId[];
@@ -23,13 +23,13 @@ const UserSchema = new Schema({
   password: { type: String },
   bio: { type: String },
   picture: { type: String, required: true },
-  // location: { type: String },
+  location: { type: String },
   portfolioWebsite: { type: String },
   reputation: { type: Number, default: 0 },
   saved: [{ type: Schema.Types.ObjectId, ref: "Question" }],
   joinedAt: { type: Date, default: Date.now },
 });
 
-const User = models.User || model<IUser>("User", UserSchema);
+const User = models.User || model("User", UserSchema);
 
 export default User;

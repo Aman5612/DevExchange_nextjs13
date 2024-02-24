@@ -16,6 +16,24 @@ import { ObjectId } from "mongodb";
 import Answer from "@/Database/answer.model";
 import Interaction from "@/Database/interaction.model";
 
+export const getHotQuestions = async () => {
+  ConnectDataBase();
+  try {
+    const hotQuestions = await Question.aggregate([
+      {
+        $sort: { views: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+    return hotQuestions;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const deleteQuestion = async (params: DeleteQuestionParams) => {
   try {
     ConnectDataBase();

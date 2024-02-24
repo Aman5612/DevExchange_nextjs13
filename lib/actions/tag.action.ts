@@ -16,6 +16,26 @@ export const getAllTags = async (params: GetAllTagsParams) => {
   }
 };
 
+export const getTopTags = async () => {
+  try {
+    ConnectDataBase();
+
+    const tags = await Tag.aggregate([
+      {
+        $sort: { questions: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+    console.log(tags);
+    return tags;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const getQuestionsByTag = async (params: GetQuestionsByTagIdParams) => {
   try {
     await ConnectDataBase();

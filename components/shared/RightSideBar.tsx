@@ -2,13 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import RenderTags from "./RenderTags";
+import { getHotQuestions } from "@/lib/actions/question.action";
+import { getTopTags } from "@/lib/actions/tag.action";
 
 interface TopQuestions {
   title: string;
   link: string;
 }
 
-const RightSideBar = () => {
+const RightSideBar = async () => {
+  const hotQuestions = await getHotQuestions();
+
+  const toptags = await getTopTags();
+
   const topQuestions: TopQuestions[] = [
     {
       title:
@@ -66,10 +72,10 @@ const RightSideBar = () => {
       <div className="flex flex-col  gap-[60px] ">
         <div className="flex flex-col gap-[30px] ">
           <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
-          {topQuestions.map((question) => {
+          {hotQuestions.map((question) => {
             return (
               <Link
-                href="/"
+                href={`/question/${question._id}`}
                 className="flex items-center justify-between gap-7"
                 key={question.title}
               >
@@ -92,13 +98,13 @@ const RightSideBar = () => {
         <div className="flex flex-col gap-[26px]">
           <div className="flex flex-col gap-[16px]">
             <h3 className="h3-bold  text-dark200_light900">Popular Tags</h3>
-            {popularTags.map((tag) => {
+            {toptags.map((tag) => {
               return (
                 <RenderTags
                   _id={tag._id}
                   key={tag._id}
-                  name={tag.title}
-                  totalQuestions={tag.totalQuestions}
+                  name={tag.name}
+                  totalQuestions={tag.questions.length}
                   showCount
                 />
               );

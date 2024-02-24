@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import moment from "moment";
 import { twMerge } from "tailwind-merge";
+import queryString from "query-string";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,4 +35,45 @@ export const getJoinedDate = (date: Date): string => {
   };
 
   return new Intl.DateTimeFormat("en-US", options).format(date);
+};
+
+interface UpdateProps {
+  params: string;
+  key: string;
+  value: string;
+}
+
+export const formUrlParams = ({ params, key, value }: UpdateProps) => {
+  const currentUrl = queryString.parse(params);
+
+  currentUrl[key] = value;
+
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+};
+
+interface RemoveProps {
+  params: string;
+  keyToRemove: string[];
+}
+
+export const removeFromUrlParams = ({ params, keyToRemove }: RemoveProps) => {
+  const currentUrl = queryString.parse(params);
+
+  keyToRemove.forEach((k) => {
+    delete currentUrl[k];
+  });
+
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
 };

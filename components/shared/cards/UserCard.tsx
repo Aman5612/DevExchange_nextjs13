@@ -19,7 +19,7 @@ const UserCard = ({ userDetails }: Props) => {
   const { name, username, picture, clerkId } = userDetails;
   return (
     <>
-      <Link href={`/picture/${clerkId}`}>
+      <Link href={`/profile/${clerkId}`}>
         <div className="shadow-light100_dark100 light-border-2  flex w-[260px] flex-col gap-[20px] rounded-[10px]  border border-solid border-gray-300 p-[30px]">
           <div className="flex flex-col items-center gap-[20px] ">
             <div className=" overflow-hidden rounded-full">

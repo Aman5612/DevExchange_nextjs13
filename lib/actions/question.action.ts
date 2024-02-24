@@ -15,6 +15,7 @@ import User from "@/Database/user.model";
 import { ObjectId } from "mongodb";
 import Answer from "@/Database/answer.model";
 import Interaction from "@/Database/interaction.model";
+import { FilterQuery } from "mongoose";
 
 export const getHotQuestions = async () => {
   ConnectDataBase();
@@ -131,7 +132,17 @@ export async function getQuestion(params: GetQuestionsParams) {
   try {
     ConnectDataBase();
 
-    const questions = await Question.find({})
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = {};
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+
+    const questions = await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
       .sort({ createdAt: -1 });

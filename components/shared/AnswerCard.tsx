@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, auth } from "@clerk/nextjs";
 import EditDeleteAction from "./EditDeleteAction";
 
 interface Props {
@@ -36,7 +36,8 @@ const AnswerCard = ({
   createdAt,
 }: Props) => {
   const authorName = author.name;
-  const showEditDeleteAction = clerkId === author.clerkId && clerkId;
+  const { userId } = auth();
+  const showEditDeleteAction = clerkId === userId && clerkId;
 
   return (
     <div className="light-border dark:dark-gradient flex flex-col gap-[14px] rounded-[10px] border-[1px] px-[20px] py-[36px] shadow">

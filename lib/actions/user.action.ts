@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 "use server";
 import { ConnectDataBase } from "../Mongoose";
 import {
@@ -250,7 +251,18 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     await ConnectDataBase();
 
-    const user = await User.find().sort({ createdAt: -1 });
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: new RegExp(searchQuery, "i") } },
+        { username: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+
+    const user = await User.find(query).sort({ createdAt: -1 });
 
     return user || null;
   } catch (error) {

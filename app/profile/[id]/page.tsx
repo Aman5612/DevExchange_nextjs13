@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getuserInfo } from "@/lib/actions/user.action";
 import { URLProps } from "@/types";
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -13,6 +13,7 @@ import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
 
 const page = async ({ params }: URLProps) => {
+  const { userId } = auth();
   const userInfo = await getuserInfo({ userId: params.id });
   return (
     <>
@@ -64,11 +65,13 @@ const page = async ({ params }: URLProps) => {
         </div>
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
-            <Link href={`/profile/editprofile/${userInfo?.user.clerkId}`}>
-              <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
-                Edit Profile
-              </Button>
-            </Link>
+            {params.id === userId && (
+              <Link href={`/profile/editprofile/${userInfo?.user.clerkId}`}>
+                <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
+                  Edit Profile
+                </Button>
+              </Link>
+            )}
           </SignedIn>
         </div>
       </div>

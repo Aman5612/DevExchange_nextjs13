@@ -132,7 +132,7 @@ export async function getQuestion(params: GetQuestionsParams) {
   try {
     ConnectDataBase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
     if (searchQuery) {
@@ -141,11 +141,27 @@ export async function getQuestion(params: GetQuestionsParams) {
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ];
     }
+   
+    let selectQuery ={};
+
+    switch(filter){
+      case "frequent":
+        selectQuery = {views: -1}
+        break;
+      case "newest":
+        selectQuery = {createdAt: -1}
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 }
+        break;
+      default:
+        break;
+    }
 
     const questions = await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
-      .sort({ createdAt: -1 });
+      .sort(selectQuery);
 
     return questions;
   } catch (error) {

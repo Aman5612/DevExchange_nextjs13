@@ -4,11 +4,39 @@ import { ConnectDataBase } from "../Mongoose";
 import { GetAllTagsParams, GetQuestionsByTagIdParams } from "./shared.type";
 import Question from "@/Database/question.model";
 import User from "@/Database/user.model";
+import { FilterQuery } from "mongoose";
 
 export const getAllTags = async (params: GetAllTagsParams) => {
   try {
     await ConnectDataBase();
-    const tags = await Tag.find({});
+    const { searchQuery, filter } = params;
+
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.name = { $regex: searchQuery, $options: "i" };
+    }
+
+    let sortQuery = {};
+
+    switch (filter) {
+      case "popular":
+        sortQuery = { questions: -1 };
+        break;
+      case "recent":
+        sortQuery = { createdAt: -1 };
+        break;
+      case "name":
+        sortQuery = { name: 1 };
+        break;
+      case "old":
+        sortQuery = { createdAt: 1 };
+        break;
+      default:
+        break;
+    }
+
+    const tags = await Tag.find(query).sort(sortQuery);
     return { tags };
   } catch (error) {
     console.log(error);
@@ -28,7 +56,6 @@ export const getTopTags = async () => {
         $limit: 5,
       },
     ]);
-    console.log(tags);
     return tags;
   } catch (error) {
     console.log(error);

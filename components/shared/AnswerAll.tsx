@@ -1,5 +1,5 @@
 import React from "react";
-import Filter from "../Filter";
+import CommunityFilter from "../Filters/CommunityFilter";
 import { AnswerFilters } from "@/constants/HomeFilters";
 import { getAnswers } from "@/lib/actions/answer.action";
 import Link from "next/link";
@@ -7,14 +7,13 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {
   userID: string;
   questionId: string;
   totalAnswers: number;
   page?: number;
-  filter?: number;
+  filter?: string;
 }
 
 const AnswerAll = async ({
@@ -24,16 +23,15 @@ const AnswerAll = async ({
   page,
   filter,
 }: Props) => {
-  const result = await getAnswers({ questionId });
-  const mongouser = await getUserById({ userId: JSON.stringify(userID) });
-  console.log(mongouser);
-  console.log(userID);
+  const result = await getAnswers({ questionId, sortBy: filter });
 
   return (
     <div className="mt-11 max-w-3xl">
       <div className="flex items-center justify-between">
         <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
-        <Filter filters={AnswerFilters} />
+        <span className="my-3 ">
+          <CommunityFilter filters={AnswerFilters} />
+        </span>
       </div>
 
       <div>

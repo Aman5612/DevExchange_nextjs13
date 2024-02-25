@@ -93,17 +93,39 @@ export const getuserInfo = async (params: GetUserByIdParams) => {
 export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     await ConnectDataBase();
-    const { clerkId, searchQuery } = params;
+    const { clerkId, searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
       : {};
 
+    let sortQuery = {};
+
+    switch (filter) {
+      case "most_recent":
+        sortQuery = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortQuery = { createdAt: 1 };
+        break;
+      case "most_voted":
+        sortQuery = { upvotes: -1 };
+        break;
+      case "most_viewed":
+        sortQuery = { views: -1 };
+        break;
+      case "most_answered":
+        sortQuery = { answers: -1 };
+        break;
+      default:
+        break;
+    }
+
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,
       options: {
-        sort: { createdAt: -1 },
+        sort: { ...sortQuery },
       },
       populate: [
         {
@@ -251,7 +273,7 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     await ConnectDataBase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -262,7 +284,23 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
       ];
     }
 
-    const user = await User.find(query).sort({ createdAt: -1 });
+    let selectQuery = {};
+
+    switch (filter) {
+      case "new_users":
+        selectQuery = { joinedAt: -1 };
+        break;
+      case "old_users":
+        selectQuery = { joinedAt: 1 };
+        break;
+      case "top_contributors":
+        selectQuery = { reputation: 1 };
+        break;
+      default:
+        break;
+    }
+
+    const user = await User.find(query).sort(selectQuery);
 
     return user || null;
   } catch (error) {

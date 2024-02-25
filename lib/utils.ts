@@ -40,7 +40,7 @@ export const getJoinedDate = (date: Date): string => {
 interface UpdateProps {
   params: string;
   key: string;
-  value: string;
+  value: string | null;
 }
 
 export const formUrlParams = ({ params, key, value }: UpdateProps) => {

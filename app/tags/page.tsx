@@ -2,13 +2,17 @@
 import CommunityFilter from "@/components/Filters/CommunityFilter";
 import LocalSearchBar from "@/components/LocalSearchBar";
 import TagCard from "@/components/shared/cards/TagCard";
-import { UserFilters } from "@/constants/HomeFilters";
+import { TagFilters } from "@/constants/HomeFilters";
 import { getAllTags } from "@/lib/actions/tag.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
-const page = async () => {
-  const result = await getAllTags({});
+const page = async ({ searchParams }: SearchParamsProps) => {
+  const result = await getAllTags({
+    searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
+  });
 
   return (
     <section>
@@ -19,10 +23,10 @@ const page = async () => {
             iconPosition="left"
             route="/community"
             imgSrc="assets/icons/search.svg"
-            placeholder="Search by Username..."
+            placeholder="Search by Tags..."
             otherClasses="flex-1"
           />
-          <CommunityFilter filters={UserFilters} />
+          <CommunityFilter filters={TagFilters} />
         </div>
       </div>
       <div className="mt-12 flex flex-wrap gap-4">

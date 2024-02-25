@@ -12,13 +12,15 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import Votes from "@/components/shared/Votes";
+import { SearchParamsProps } from "@/types";
 
-const page = async ({ params }: any) => {
+const page = async ({ params, searchParams }: SearchParamsProps) => {
   const { userId } = auth();
-
   if (!userId) redirect("/sign-in");
   const mongoUser = await getUserById({ userId });
-  const question = await getQuestionById({ questionId: params._id });
+  const question = await getQuestionById({
+    questionId: params._id || "",
+  });
 
   return (
     <>
@@ -97,6 +99,7 @@ const page = async ({ params }: any) => {
         userID={mongoUser._id}
         questionId={question._id}
         totalAnswers={question.answers.length}
+        filter={searchParams?.filter || " "}
       />
 
       <Answer

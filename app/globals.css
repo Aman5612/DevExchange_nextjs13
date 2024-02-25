@@ -47,6 +47,9 @@ body {
     @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-transparent;
   }
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 
 .active-theme {
   filter: invert(53%) sepia(98%) saturate(3332%) hue-rotate(0deg)
@@ -66,7 +69,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
   height: 3px;
   border-radius: 2px;
 }
@@ -74,11 +77,11 @@ body {
   background: #ffffff;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 50px;
+  display: hidden;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: #e7bb7a;
+  border-radius: 50px;
 }
 .custom-global-scrollbar::-webkit-scrollbar {
   width: 10px;

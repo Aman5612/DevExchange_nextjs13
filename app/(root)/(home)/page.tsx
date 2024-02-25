@@ -6,10 +6,14 @@ import QuestionCard from "@/components/shared/cards/QuestionCard";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/HomeFilters";
 import { getQuestion } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-export default async function Home() {
-  const mongoQuestions = await getQuestion({});
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const mongoQuestions = await getQuestion({
+    searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
+  });
 
   return (
     <div className="  sticky mx-auto flex w-full flex-col gap-[40px]">

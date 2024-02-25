@@ -1,15 +1,35 @@
+import LocalSearchBar from "@/components/LocalSearchBar";
 import NoResult from "@/components/NoResult";
 import QuestionCard from "@/components/shared/cards/QuestionCard";
+import { QuestionFilters } from "@/constants/HomeFilters";
 import { getSavedQuestion } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
+import CommunityFilter from "@/components/Filters/CommunityFilter";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
-  const mongoQuestions = await getSavedQuestion({ clerkId: userId });
+  const mongoQuestions = await getSavedQuestion({
+    clerkId: userId,
+    searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
+  });
 
   return (
     <div className="  sticky mx-auto flex w-full flex-col gap-[40px]">
-      <h1 className="h1-bold text-dark100_light900 ">Saved Questions</h1>
+      <div className="flex flex-col gap-6">
+        <h1 className="h1-bold text-dark100_light900 ">Saved Questions</h1>
+        <div className="flex min-h-[56px] w-full grow justify-between gap-4 rounded-xl max-sm:flex-col max-sm:items-center">
+          <LocalSearchBar
+            iconPosition="left"
+            route="/community"
+            imgSrc="assets/icons/search.svg"
+            placeholder="Search for questions..."
+            otherClasses="flex-1"
+          />
+          <CommunityFilter filters={QuestionFilters} />
+        </div>
+      </div>
 
       <div className=" flex w-full flex-col gap-[20px]">
         {mongoQuestions.length > 0 ? (

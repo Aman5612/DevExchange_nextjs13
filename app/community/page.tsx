@@ -4,11 +4,15 @@ import LocalSearchBar from "@/components/LocalSearchBar";
 import UserCard from "@/components/shared/cards/UserCard";
 import { UserFilters } from "@/constants/HomeFilters";
 import { getAllUsers } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 
-const page = async () => {
-  const users = await getAllUsers({});
+const page = async ({ searchParams }: SearchParamsProps) => {
+  const users = await getAllUsers({
+    searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
+  });
   return (
     <section>
       <div className="flex flex-col gap-6">

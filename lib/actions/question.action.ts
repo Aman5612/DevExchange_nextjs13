@@ -15,6 +15,25 @@ import User from "@/Database/user.model";
 import { ObjectId } from "mongodb";
 import Answer from "@/Database/answer.model";
 import Interaction from "@/Database/interaction.model";
+import { FilterQuery } from "mongoose";
+
+export const getHotQuestions = async () => {
+  ConnectDataBase();
+  try {
+    const hotQuestions = await Question.aggregate([
+      {
+        $sort: { views: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+    return hotQuestions;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 export const deleteQuestion = async (params: DeleteQuestionParams) => {
   try {
@@ -113,10 +132,36 @@ export async function getQuestion(params: GetQuestionsParams) {
   try {
     ConnectDataBase();
 
-    const questions = await Question.find({})
+    const { searchQuery, filter } = params;
+
+    const query: FilterQuery<typeof Question> = {};
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+   
+    let selectQuery ={};
+
+    switch(filter){
+      case "frequent":
+        selectQuery = {views: -1}
+        break;
+      case "newest":
+        selectQuery = {createdAt: -1}
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 }
+        break;
+      default:
+        break;
+    }
+
+    const questions = await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
-      .sort({ createdAt: -1 });
+      .sort(selectQuery);
 
     return questions;
   } catch (error) {

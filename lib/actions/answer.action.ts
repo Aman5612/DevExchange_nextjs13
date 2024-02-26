@@ -112,7 +112,7 @@ export const createAnswer = async ({
 export const getAnswers = async (params: GetAnswersParams) => {
   try {
     ConnectDataBase();
-    const { questionId, sortBy } = params;
+    const { questionId, sortBy, page, pageSize } = params;
     let sortQuery = {};
     switch (sortBy) {
       case "highestUpvotes":
@@ -130,14 +130,23 @@ export const getAnswers = async (params: GetAnswersParams) => {
       default:
         break;
     }
+
+    const size = pageSize || 10;
+    const skip = page ? (page - 1) * size : 0;
+
     const answers = await Answer.find({ question: questionId })
       .populate({
         path: "author",
         model: "User",
         select: "_id clerkId name picture",
       })
+      .skip(skip)
+      .limit(size + 1)
       .sort(sortQuery);
-    return answers;
+
+    const isNext = answers.length > size;
+
+    return { answers, isNext };
   } catch (error) {
     console.log(error);
     throw error;

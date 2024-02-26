@@ -47,10 +47,14 @@ export const getUserAnswer = async (params: GetUserStatsParams) => {
 };
 
 export const getUserQuestions = async (params: GetUserStatsParams) => {
-  const { userId } = params;
+  const { userId, page, pageSize } = params;
   ConnectDataBase();
   try {
     const totalQuestions = await Question.countDocuments({ author: userId });
+
+    const size = pageSize || 10;
+    const skip = page ? (page - 1) * size : 0;
+
     const userQuestions = await Question.find({ author: userId })
       .populate([
         {
@@ -64,9 +68,13 @@ export const getUserQuestions = async (params: GetUserStatsParams) => {
           select: "name",
         },
       ])
+      .skip(skip)
+      .limit(size+1)
       .sort({ views: -1, upvotes: -1 });
 
-    return { totalQuestions, questions: userQuestions };
+    const isNext = (userQuestions.length > size);
+
+    return { totalQuestions, questions: userQuestions, isNext };
   } catch (e) {
     console.log(e);
     throw e;
@@ -93,7 +101,7 @@ export const getuserInfo = async (params: GetUserByIdParams) => {
 export async function getSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     await ConnectDataBase();
-    const { clerkId, searchQuery, filter } = params;
+    const { clerkId, searchQuery, filter, page, pageSize } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
@@ -121,11 +129,16 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
         break;
     }
 
+    const size = pageSize ? +pageSize : 10;
+    const skip = page ? (page - 1) * size : 0;
+
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,
       options: {
         sort: { ...sortQuery },
+        skip,
+        limit: size + 1,
       },
       populate: [
         {
@@ -145,7 +158,8 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
       throw new Error("User not found");
     }
     const savedQuestion = user.saved;
-    return savedQuestion;
+    const isNext = savedQuestion.length > size;
+    return { savedQuestion, isNext };
   } catch (error) {
     console.log("error", error);
     throw error;
@@ -273,7 +287,7 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     await ConnectDataBase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page, pageSize } = params;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -283,6 +297,11 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
         { username: { $regex: new RegExp(searchQuery, "i") } },
       ];
     }
+
+    const size = pageSize ? +pageSize : 10;
+    const skip = page ? (page - 1) * size : 0;
+
+    const userCount = await User.countDocuments(query);
 
     let selectQuery = {};
 
@@ -300,9 +319,14 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
         break;
     }
 
-    const user = await User.find(query).sort(selectQuery);
+    const user = await User.find(query)
+      .skip(skip)
+      .limit(size)
+      .sort(selectQuery);
 
-    return user || null;
+    const isNext = userCount > (page ? page * size : 0);
+
+    return { user, isNext };
   } catch (error) {
     console.log("error", error);
     throw error;

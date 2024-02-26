@@ -1,6 +1,7 @@
 "Use client";
 import CommunityFilter from "@/components/Filters/CommunityFilter";
 import LocalSearchBar from "@/components/LocalSearchBar";
+import Pagination from "@/components/Pagination";
 import TagCard from "@/components/shared/cards/TagCard";
 import { TagFilters } from "@/constants/HomeFilters";
 import { getAllTags } from "@/lib/actions/tag.action";
@@ -12,6 +13,8 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllTags({
     searchQuery: searchParams?.q,
     filter: searchParams?.filter,
+    page: searchParams?.page ? +searchParams.page : 1,
+    pageSize: 10,
   });
 
   return (
@@ -48,6 +51,12 @@ const page = async ({ searchParams }: SearchParamsProps) => {
             </p>
           </div>
         )}
+      </div>
+      <div className=" mt-10">
+        <Pagination
+          isNext={result.isNext}
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+        />
       </div>
     </section>
   );

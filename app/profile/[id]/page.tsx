@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getuserInfo } from "@/lib/actions/user.action";
-import { URLProps } from "@/types";
+import { SearchParamsProps, URLProps } from "@/types";
 import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +12,7 @@ import Stats from "@/components/shared/Stats";
 import QuestionsTab from "@/components/shared/QuestionsTab";
 import AnswersTab from "@/components/shared/AnswersTab";
 
-const page = async ({ params }: URLProps) => {
+const page = async ({ params, searchParams }: URLProps & SearchParamsProps) => {
   const { userId } = auth();
   const userInfo = await getuserInfo({ userId: params.id });
   return (
@@ -93,6 +93,7 @@ const page = async ({ params }: URLProps) => {
             <QuestionsTab
               userId={userInfo?.user._id}
               clerkId={userInfo?.user.clerkId}
+              page={searchParams?.page ? +searchParams?.page : 1}
             />
           </TabsContent>
           <TabsContent value="answers">

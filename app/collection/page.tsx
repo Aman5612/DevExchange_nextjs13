@@ -6,6 +6,7 @@ import { getSavedQuestion } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import CommunityFilter from "@/components/Filters/CommunityFilter";
 import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/Pagination";
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
@@ -13,6 +14,8 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     clerkId: userId,
     searchQuery: searchParams?.q,
     filter: searchParams?.filter,
+    page: searchParams?.page ? +searchParams.page : 1,
+    pageSize: 10,
   });
 
   return (
@@ -32,8 +35,8 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       </div>
 
       <div className=" flex w-full flex-col gap-[20px]">
-        {mongoQuestions.length > 0 ? (
-          mongoQuestions.map((question: any) => {
+        {mongoQuestions.savedQuestion.length > 0 ? (
+          mongoQuestions.savedQuestion.map((question: any) => {
             return (
               <QuestionCard
                 _id={question._id}
@@ -55,6 +58,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
             url="/ask-question"
           />
         )}
+      </div>
+      <div className=" mt-10">
+        <Pagination
+          isNext={mongoQuestions.isNext}
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+        />
       </div>
     </div>
   );

@@ -97,7 +97,7 @@ export interface GetAllTagsParams {
 }
 
 export interface GetQuestionsByTagIdParams {
-  tagId: string;
+  tagId: string | undefined;
   page?: number;
   pageSize?: number;
   searchQuery?: string;

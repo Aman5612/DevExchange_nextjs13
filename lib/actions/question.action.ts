@@ -132,7 +132,7 @@ export async function getQuestion(params: GetQuestionsParams) {
   try {
     ConnectDataBase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page, pageSize } = params;
 
     const query: FilterQuery<typeof Question> = {};
     if (searchQuery) {
@@ -141,29 +141,38 @@ export async function getQuestion(params: GetQuestionsParams) {
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ];
     }
-   
-    let selectQuery ={};
 
-    switch(filter){
+    let selectQuery = {};
+
+    switch (filter) {
       case "frequent":
-        selectQuery = {views: -1}
+        selectQuery = { views: -1 };
         break;
       case "newest":
-        selectQuery = {createdAt: -1}
+        selectQuery = { createdAt: -1 };
         break;
       case "unanswered":
-        query.answers = { $size: 0 }
+        query.answers = { $size: 0 };
         break;
       default:
         break;
     }
 
+    const size = pageSize ? +pageSize : 10;
+    const skip = page ? (page - 1) * size : 0;
+
+    const questionCount = await Question.countDocuments(query);
+
     const questions = await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
+      .skip(skip)
+      .limit(size)
       .sort(selectQuery);
 
-    return questions;
+    const isNext = questionCount > (page ? page * size : 0);
+
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;

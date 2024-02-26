@@ -100,6 +100,7 @@ const page = async ({ params, searchParams }: SearchParamsProps) => {
         questionId={question._id}
         totalAnswers={question.answers.length}
         filter={searchParams?.filter || " "}
+        page={searchParams?.page ? +searchParams?.page : 1}
       />
 
       <Answer

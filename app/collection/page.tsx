@@ -36,7 +36,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
       <div className=" flex w-full flex-col gap-[20px]">
         {mongoQuestions.savedQuestion.length > 0 ? (
-          mongoQuestions.savedQuestion.map((question) => {
+          mongoQuestions.savedQuestion.map((question: any) => {
             return (
               <QuestionCard
                 _id={question._id}

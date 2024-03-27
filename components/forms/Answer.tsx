@@ -1,6 +1,5 @@
 "use client";
 import React, { useRef, useState } from "react";
-import OpenAI from "openai";
 import {
   Form,
   FormControl,

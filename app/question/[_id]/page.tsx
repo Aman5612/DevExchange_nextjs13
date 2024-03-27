@@ -105,6 +105,7 @@ const page = async ({ params, searchParams }: SearchParamsProps) => {
 
       <Answer
         question={question.content}
+        questionTitle={question.title}
         authorId={JSON.stringify(mongoUser._id)}
         questionId={JSON.stringify(question._id)}
       />

@@ -156,3 +156,10 @@ export interface GetUserStatsParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export const JobPageFilters = [
+  { name: "Full-time", value: "fulltime" },
+  { name: "Part-time", value: "parttime" },
+  { name: "Contractor", value: "contractor" },
+  { name: "Internship", value: "intern" },
+];

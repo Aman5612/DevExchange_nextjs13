@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 let isConnected: boolean = false;
 
 export const ConnectDataBase = async () => {
-  mongoose.set("strict", true);
-
   const URL = process.env.MONGODB_URL;
   if (!URL) {
     return console.log("MONGODB_URL is missing");
@@ -17,7 +15,6 @@ export const ConnectDataBase = async () => {
     await mongoose.connect(URL, {
       dbName: "devexchange",
     });
-
     isConnected = true;
     console.log("MongoDB is connected");
   } catch (error) {
